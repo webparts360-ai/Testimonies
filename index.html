@@ -1,9 +1,197 @@
-<div style="max-width: 420px; margin: 0 auto;">
-  <iframe
-    src="https://www.youtube.com/embed/a4ursQJT7x0"
-    title="YouTube Shorts"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen
-    style="width:100%; aspect-ratio: 9 / 16; border:0">
-  </iframe>
-</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customer Testimonials</title>
+  <style>
+    :root {
+      --gap: 16px;
+      --maxw: 1200px;
+      --radius: 12px;
+      --bg: #0b0c10;
+      --card: #15171c;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --shadow: 0 6px 20px rgba(0,0,0,.25);
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(80vw 80vw at 50% -10%, #1b2735, #0f141a 55%, #0b0c10);
+    }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 28px 16px 64px; }
+    header { margin-bottom: 20px; }
+    header h1 { font-size: 28px; margin: 0 0 6px; }
+    header p { margin: 0; color: var(--muted); }
+
+    /* Responsive grid that also limits item count per breakpoint */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
+    }
+    /* Phone: 1 column, show first 4 */
+    .grid .item:nth-child(n+5) { display: none; }
+
+    /* Tablet: 2 columns, show first 8 */
+    @media (min-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .grid .item { display: block; }
+      .grid .item:nth-child(n+9) { display: none; }
+    }
+
+    /* Desktop: 3 columns, show all */
+    @media (min-width: 1024px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .grid .item { display: block; }
+    }
+
+    .item {
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .video {
+      /* Maintain vertical 9:16 shape for Shorts */
+      aspect-ratio: 9 / 16;
+      background: #000;
+      position: relative;
+      overflow: hidden;
+    }
+    .video iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .meta { padding: 12px 12px 14px; }
+    .title { font-size: 15px; margin: 0 0 4px; }
+    .byline { color: var(--muted); font-size: 13px; margin: 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>What our customers say?</h1>
+      <p>Here are some testimonials from the participants of my AI workshops...</p>
+    </header>
+
+    <section class="grid" aria-label="Customer testimonial videos">
+      <!-- Item 1 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/a4ursQJT7x0"
+            title="Customer testimonial 1"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Cut onboarding time in half”</h3>
+          <p class="byline">Acme Corp · RevOps Lead</p>
+        </div>
+      </article>
+
+      <!-- Item 2 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/7rbZn0eneGU"
+            title="Customer testimonial 2"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Deal cycle down 21%”</h3>
+          <p class="byline">Northwind Traders · VP Sales</p>
+        </div>
+      </article>
+
+      <!-- Item 3 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/bUMkilHg1Bk"
+            title="AI for HR Workshop"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Ramp in days, not weeks”</h3>
+          <p class="byline">UWC Berhad, COO</p>
+        </div>
+      </article>
+
+      <!-- Item 4 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/bIrAV2Za9Z4"
+            title="Customer testimonial 4"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Automate Tasks”</h3>
+          <p class="byline">DELL, HR Lead</p>
+        </div>
+      </article>
+
+      <!-- Item 5 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/5C4-QSmI3ug"
+            title="Customer testimonial 5"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Forecasting finally accurate”</h3>
+          <p class="byline">RGB International Berhad, HR Admin</p>
+        </div>
+      </article>
+
+      <!-- Item 6 -->
+      <article class="item">
+        <div class="video">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/rlKPpibRTjY"
+            title="Customer testimonial 6"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="meta">
+          <h3 class="title">“Onboarding under 48 hours”</h3>
+          <p class="byline">Initech · CRO</p>
+        </div>
+      </article>
+    </section>
+  </div>
+</body>
+</html>
