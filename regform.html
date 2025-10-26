@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AMP 2025 · Event Registration</title>
+  <meta name="description" content="AMP 2025 multi-page registration form (Welcome · Participant · Preferences · Confirmation · Thank You)">
+  <style>
+    :root {
+      --bg:#ffffff;
+      --muted:#64748b;
+      --text:#0f172a;
+      --primary:#2563eb;
+      --primary-2:#3b82f6;
+      --accent:#059669;
+      --danger:#dc2626;
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height:100%; margin:0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+      position: relative;
+      min-height: 100vh;
+      background: url('https://img1.wsimg.com/isteam/ip/9d181ae8-10c7-4898-a95a-74d8dc3d6483/blob-d964907.png/:/rs=w:2560,h:1439,cg=true,m/cr=w:2560,h:1439') center/cover no-repeat fixed;
+    }
+    /* Soft white overlay to ensure readability */
+    body::before{
+      content:""; position:fixed; inset:0; pointer-events:none;
+      background: rgba(255,255,255,0.85);
+    }
+
+    .wrap { max-width: 960px; margin: 64px auto; padding: 0 16px; position: relative; z-index: 1; }
+    header { text-align:center; margin-bottom: 24px; }
+    .logo { display:inline-flex; align-items:center; gap:10px; }
+    .logo-badge { width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,var(--primary),var(--accent)); box-shadow:var(--shadow); }
+    h1 { font-weight: 800; letter-spacing:.2px; margin:10px 0 6px; font-size: clamp(1.4rem,1.2rem + 1.5vw,2.15rem); }
+    p.lead { color: var(--muted); margin: 0 auto; max-width: 760px; }
+
+    .card { background: rgba(255,255,255,0.98); backdrop-filter: blur(6px); border: 1px solid #e5e7eb; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .card .body { padding: 22px; }
+
+    .stepper { display:flex; gap:8px; padding: 14px 16px; background: #f8fafc; border-bottom:1px solid #e5e7eb; }
+    .step { flex:1; display:flex; align-items:center; gap:10px; min-width:0; }
+    .step .dot { width:26px; height:26px; border-radius:999px; display:grid; place-items:center; color:#fff; font-weight:700; background:#cbd5e1; }
+    .step.active .dot { background: var(--primary); }
+    .step.done .dot { background: var(--accent); }
+    .step .label { color: var(--muted); font-size:.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .step.active .label { color: var(--text); font-weight:600; }
+
+    section[role="tabpanel"] { display:none; }
+    section[role="tabpanel"].active { display:block; animation: fade .25s ease-out both; }
+    @keyframes fade { from{ opacity:0; transform: translateY(6px);} to{opacity:1; transform:none;} }
+
+    form { display:grid; gap:18px; }
+    .grid { display:grid; gap:14px; grid-template-columns: 1fr; }
+    @media(min-width:700px){ .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+    label { display:block; font-weight:600; font-size:.98rem; margin-bottom:8px; }
+    .hint { color: var(--muted); font-size:.9rem; margin-top:6px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select {
+      width:100%; padding:12px 14px; background:#fff; color:var(--text);
+      border:1px solid #cbd5e1; border-radius:12px; outline:none; transition: border-color .18s, box-shadow .18s;
+    }
+    input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+
+    .field-error { color:var(--danger); font-size:.9rem; margin-top:6px; display:none; }
+    .invalid + .field-error { display:block; }
+
+    .choices { display:flex; flex-wrap:wrap; gap:10px; }
+    .pill { border:1px solid #cbd5e1; padding:10px 14px; border-radius:999px; cursor:pointer; user-select:none; background:#fff; color:var(--text); transition:.18s; }
+    .pill[aria-checked="true"], .pill:hover { border-color: var(--primary); background:#eff6ff; }
+
+    .actions { display:flex; gap:10px; justify-content: space-between; align-items:center; margin-top:6px; }
+    .btn { border:none; border-radius:12px; padding:12px 16px; font-weight:700; cursor:pointer; transition: transform .06s ease, opacity .18s; }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary { background: linear-gradient(180deg, var(--primary), var(--primary-2)); color:#fff; }
+    .btn.ghost { background: transparent; color:var(--text); border:1px solid #cbd5e1; }
+    .btn[disabled] { opacity:.6; cursor:not-allowed; }
+
+    .summary { background:#fff; border:1px solid #e2e8f0; border-radius:12px; padding:14px; display:grid; gap:8px; }
+    .summary dt { color:var(--muted); }
+    .summary dd { margin:0; font-weight:700; }
+
+    footer { color:var(--muted); text-align:center; margin-top:18px; font-size:.9rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="logo-badge" aria-hidden="true"></div>
+        <div><strong>AMP 2025</strong></div>
+      </div>
+      <h1>Event Registration</h1>
+      <p class="lead">Welcome to the biggest independent Microsoft technology conference in Kuala Lumpur. Please complete this short 4‑step registration.</p>
+    </header>
+
+    <div class="card" role="application" aria-labelledby="formTitle">
+      <div class="stepper" aria-label="Progress">
+        <div class="step active" data-step="0"><div class="dot">1</div><div class="label">Welcome</div></div>
+        <div class="step" data-step="1"><div class="dot">2</div><div class="label">Participant</div></div>
+        <div class="step" data-step="2"><div class="dot">3</div><div class="label">Preferences</div></div>
+        <div class="step" data-step="3"><div class="dot">4</div><div class="label">Confirmation</div></div>
+      </div>
+
+      <!-- PANELS -->
+      <section class="body active" role="tabpanel" aria-labelledby="step-0-title" id="step-0">
+        <h2 id="step-0-title" style="margin-top:0">Welcome</h2>
+        <form id="form-step-0" novalidate>
+          <div>
+            <label for="email">Email Address <span aria-hidden="true">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" required placeholder="you@example.com" />
+            <div class="field-error" id="email-error">Please enter a valid email address.</div>
+            <p class="hint">We'll send your registration confirmation and event updates here.</p>
+          </div>
+          <div class="actions">
+            <span></span>
+            <button type="button" class="btn primary" id="to-step-1">Start Registration →</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="body" role="tabpanel" aria-labelledby="step-1-title" id="step-1">
+        <h2 id="step-1-title" style="margin-top:0">Participant Information</h2>
+        <form id="form-step-1" novalidate>
+          <div class="grid grid-2">
+            <div>
+              <label for="fullName">Full Name <span aria-hidden="true">*</span></label>
+              <input type="text" id="fullName" name="fullName" required placeholder="Your full name" />
+              <div class="field-error" id="name-error">Your name is required.</div>
+            </div>
+            <div>
+              <label for="company">Company / Organization</label>
+              <input type="text" id="company" name="company" placeholder="Company or organization" />
+            </div>
+            <div>
+              <label for="role">Job Title / Role</label>
+              <input type="text" id="role" name="role" placeholder="e.g., IT Manager" />
+            </div>
+            <div>
+              <label for="phone">Phone Number <span class="hint">(optional)</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="e.g., +60 12‑345 6789" />
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn ghost" data-back>← Back</button>
+            <button type="button" class="btn primary" id="to-step-2">Next → Preferences</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="body" role="tabpanel" aria-labelledby="step-2-title" id="step-2">
+        <h2 id="step-2-title" style="margin-top:0">Preferences</h2>
+        <form id="form-step-2" novalidate>
+          <div>
+            <label>Track Preference <span aria-hidden="true">*</span></label>
+            <div class="choices" role="group" aria-label="Track Preference">
+              <button type="button" class="pill" data-group="track" data-value="Business" aria-checked="false">Business</button>
+              <button type="button" class="pill" data-group="track" data-value="IT Pro" aria-checked="false">IT Pro</button>
+              <button type="button" class="pill" data-group="track" data-value="Developer" aria-checked="false">Developer</button>
+            </div>
+            <div class="field-error" id="track-error">Please choose a track.</div>
+          </div>
+          <div>
+            <label>Meal Preference <span aria-hidden="true">*</span></label>
+            <div class="choices" role="group" aria-label="Meal Preference">
+              <button type="button" class="pill" data-group="meal" data-value="Vegetarian" aria-checked="false">Vegetarian</button>
+              <button type="button" class="pill" data-group="meal" data-value="Non-Vegetarian" aria-checked="false">Non‑Vegetarian</button>
+            </div>
+            <div class="field-error" id="meal-error">Please choose a meal preference.</div>
+          </div>
+          <div>
+            <label for="shirt">T‑Shirt Size <span class="hint">(optional)</span></label>
+            <select id="shirt" name="shirt">
+              <option value="">Select size</option>
+              <option>S</option>
+              <option>M</option>
+              <option>L</option>
+              <option>XL</option>
+              <option>XXL</option>
+            </select>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn ghost" data-back>← Back</button>
+            <button type="button" class="btn primary" id="to-step-3">Next → Confirmation</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="body" role="tabpanel" aria-labelledby="step-3-title" id="step-3">
+        <h2 id="step-3-title" style="margin-top:0">Confirmation</h2>
+        <p class="hint">Please review your details before submitting.</p>
+        <dl class="summary" id="summary"></dl>
+        <div class="actions">
+          <button type="button" class="btn ghost" data-back>← Back</button>
+          <button type="button" class="btn primary" id="submitBtn">Submit Registration</button>
+        </div>
+      </section>
+
+      <section class="body" role="tabpanel" aria-labelledby="step-4-title" id="step-4">
+        <h2 id="step-4-title" style="margin-top:0">Thank You!</h2>
+        <p>Thank you for registering for <strong>AMP 2025</strong>. A confirmation email will be sent to <span id="ty-email"></span>.</p>
+        <p class="hint">We look forward to seeing you at Microsoft Malaysia on <em>[event date]</em>.</p>
+        <div class="actions">
+          <button type="button" class="btn primary" id="newRegBtn">Register Another Attendee</button>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      © 2025 AMP Community · No auto‑save. Data only persists until you submit.
+    </footer>
+  </div>
+
+  <script>
+    // In‑memory state only (no auto‑save)
+    const state = { email:"", fullName:"", company:"", role:"", phone:"", track:"", meal:"", shirt:"" };
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const panels = [
+      document.getElementById('step-0'),
+      document.getElementById('step-1'),
+      document.getElementById('step-2'),
+      document.getElementById('step-3'),
+      document.getElementById('step-4')
+    ];
+
+    function goTo(stepIndex){
+      panels.forEach((p,i)=>p.classList.toggle('active', i===stepIndex));
+      steps.forEach((s,i)=>{ s.classList.toggle('active', i===stepIndex); s.classList.toggle('done', i<stepIndex); });
+      const h = panels[stepIndex].querySelector('h2'); if(h && h.focus) h.focus();
+    }
+
+    // Welcome → Participant
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    document.getElementById('to-step-1').addEventListener('click', ()=>{
+      const value = emailInput.value.trim();
+      const valid = value.length>0 && emailInput.checkValidity();
+      emailError.style.display = valid ? 'none' : 'block';
+      if(!valid) return;
+      state.email = value; goTo(1);
+    });
+
+    // Participant → Preferences
+    const nameInput = document.getElementById('fullName');
+    const nameError = document.getElementById('name-error');
+    document.getElementById('to-step-2').addEventListener('click', ()=>{
+      const valid = nameInput.value.trim().length>1;
+      nameError.style.display = valid ? 'none' : 'block';
+      if(!valid) return;
+      state.fullName = nameInput.value.trim();
+      state.company = document.getElementById('company').value.trim();
+      state.role = document.getElementById('role').value.trim();
+      state.phone = document.getElementById('phone').value.trim();
+      goTo(2);
+    });
+
+    // Preferences selections
+    document.querySelectorAll('.pill').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const group = btn.dataset.group;
+        document.querySelectorAll(`.pill[data-group="${group}"]`).forEach(p=>p.setAttribute('aria-checked','false'));
+        btn.setAttribute('aria-checked','true');
+        const key = group === 'track' ? 'track' : 'meal';
+        state[key] = btn.dataset.value;
+      });
+    });
+
+    // Preferences → Confirmation
+    document.getElementById('to-step-3').addEventListener('click', ()=>{
+      const trackValid = !!state.track;
+      const mealValid = !!state.meal;
+      document.getElementById('track-error').style.display = trackValid ? 'none' : 'block';
+      document.getElementById('meal-error').style.display = mealValid ? 'none' : 'block';
+      if(!(trackValid && mealValid)) return;
+      state.shirt = document.getElementById('shirt').value;
+      fillSummary(); goTo(3);
+    });
+
+    // Back buttons
+    document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click', ()=>{
+      const current = panels.findIndex(p=>p.classList.contains('active'));
+      goTo(Math.max(0, current-1));
+    }));
+
+    // Submit → Thank You
+    document.getElementById('submitBtn').addEventListener('click', ()=>{
+      document.getElementById('ty-email').textContent = state.email;
+      goTo(4);
+    });
+
+    // Start new registration
+    document.getElementById('newRegBtn').addEventListener('click', ()=>{
+      for (const k in state) state[k] = "";
+      document.querySelectorAll('input, select').forEach(el=>{ if(el.type!=='button') el.value=''; });
+      document.querySelectorAll('.pill').forEach(p=>p.setAttribute('aria-checked','false'));
+      goTo(0); emailInput.focus();
+    });
+
+    function fillSummary(){
+      const s = document.getElementById('summary');
+      s.innerHTML = ''+
+        row('Email', state.email)+
+        row('Full Name', state.fullName)+
+        row('Company / Organization', state.company || '—')+
+        row('Job Title / Role', state.role || '—')+
+        row('Phone', state.phone || '—')+
+        row('Track Preference', state.track)+
+        row('Meal Preference', state.meal)+
+        row('T‑Shirt Size', state.shirt || '—');
+      function row(k,v){ return `<div><dt>${k}</dt><dd>${escapeHtml(v)}</dd></div>` }
+    }
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s]));
+    }
+  </script>
+</body>
+</html>
